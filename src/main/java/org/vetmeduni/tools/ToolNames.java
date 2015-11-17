@@ -23,26 +23,15 @@
  */
 package org.vetmeduni.tools;
 
-import org.apache.commons.cli.Options;
-
 /**
  * Enum with all the tools already developed
  *
  * @author Daniel Gómez-Sánchez
  */
 public enum ToolNames {
-	NullTool("NullTool", "NullTool", new AbstractTool() {
-
-		@Override
-		protected Options programOptions() {
-			return null;
-		}
-
-		@Override
-		public int run(String[] args) {
-			return 0;
-		}
-	});
+	MismatchesByLength("Compute the number of mismatches by length of the read",
+		"Obtain the mean and variance of the NM tag (number of mismatches) for reads regarding the read lenght. If the tag is not found, the record is ignored",
+		new MismatchesByLength());
 
 	/**
 	 * The short description for the tool
