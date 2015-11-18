@@ -31,7 +31,7 @@ package org.vetmeduni.tools;
 public enum ToolNames {
 	MismatchesByLength("Compute the number of mismatches by length of the read",
 		"Obtain the mean and variance of the NM tag (number of mismatches) for reads regarding the read lenght. If the tag is not found, the record is ignored",
-		new MismatchesByLength());
+		new org.vetmeduni.tools.implemented.MismatchesByLength());
 
 	/**
 	 * The short description for the tool

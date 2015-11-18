@@ -27,6 +27,8 @@ import htsjdk.samtools.util.Log;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
+import java.io.File;
+
 /**
  * Class that contains static instances of common options and their checking
  *
@@ -64,4 +66,37 @@ public class CommonOptions {
 		}
 		return nThreads;
 	}
+
+	/**
+	 * Option for the input to compute the statistics
+	 */
+	public static Option bamInput = Option.builder("i").longOpt("input").desc("Input BAM/SAM file for compute statistics").hasArg()
+						 .argName("INPUT.bam").numberOfArgs(1).required().build();
+
+	/**
+	 * Get the input file
+	 *
+	 * @param cmd
+	 * @return
+	 */
+	public static File getInputFile(CommandLine cmd) {
+		return new File(cmd.getOptionValue(bamInput.getOpt()));
+	}
+
+	/**
+	 * Option for the output for statistics
+	 */
+	public static Option statsOutput = Option.builder("o").longOpt("output").desc("Statistics output").hasArg().argName("OUTPUT")
+						  .numberOfArgs(1).required().build();
+
+	/**
+	 * Get the output file
+	 *
+	 * @param cmd
+	 * @return
+	 */
+	public static File getOutputFile(CommandLine cmd) {
+		return new File(cmd.getOptionValue(statsOutput.getOpt()));
+	}
+
 }

@@ -21,13 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.vetmeduni.tools;
+package org.vetmeduni.tools.implemented;
 
 import htsjdk.samtools.*;
 import htsjdk.samtools.util.ProgressLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.vetmeduni.tools.AbstractTool;
+import org.vetmeduni.tools.defaults.CommonOptions;
 import org.vetmeduni.utils.RunningHistogram;
 
 import java.io.File;
@@ -45,8 +47,8 @@ public class MismatchesByLength extends AbstractTool {
 		try {
 			// parsing command line
 			CommandLine cmd = programParser(args);
-			File input = new File(cmd.getOptionValue("i"));
-			File output = new File(cmd.getOptionValue("o"));
+			File input = CommonOptions.getInputFile(cmd);
+			File output = CommonOptions.getOutputFile(cmd);
 			// int nThreads = CommonOptions.numberOfThreads(logger, cmd);
 			// FINISH PARSING: log the command line (not longer in the param file)
 			logCmdLine(args);
@@ -86,14 +88,10 @@ public class MismatchesByLength extends AbstractTool {
 
 	@Override
 	protected Options programOptions() {
-		Option input = Option.builder("i").longOpt("input").desc("Input BAM/SAM file for compute statistics").hasArg()
-							 .argName("INPUT.bam").numberOfArgs(1).required().build();
-		Option output = Option.builder("o").longOpt("output").desc("Histogram output").hasArg().argName("OUTPUT")
-							  .numberOfArgs(1).required().build();
 		Options options = new Options();
-		options.addOption(input);
-		options.addOption(output);
 		// add common options
+		options.addOption(CommonOptions.bamInput);
+		options.addOption(CommonOptions.statsOutput);
 		// options.addOption(CommonOptions.parallel);
 		return options;
 	}
