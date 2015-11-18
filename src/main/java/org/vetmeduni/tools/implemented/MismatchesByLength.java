@@ -30,10 +30,13 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.vetmeduni.tools.AbstractTool;
 import org.vetmeduni.tools.defaults.CommonOptions;
+import org.vetmeduni.utils.Formats;
 import org.vetmeduni.utils.RunningHistogram;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.vetmeduni.utils.Formats.commaFmt;
 
 /**
  * Count the number of mismatches (NM tag) regarding the length of the read
@@ -85,8 +88,8 @@ public class MismatchesByLength extends AbstractTool {
 			histogram.addValue(readLength, nm);
 			progress.record(record);
 		}
-		logger.info("Processed ", progress.getCount(), " reads");
-		logger.warn("Ignored ", ignored, " reads without NM tag");
+		logger.info("Processed ", commaFmt.format(progress.getCount()), " reads");
+		logger.warn("Ignored ", commaFmt.format(ignored), " reads without NM tag");
 		return histogram;
 	}
 

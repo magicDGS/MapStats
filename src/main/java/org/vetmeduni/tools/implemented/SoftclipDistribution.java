@@ -28,12 +28,15 @@ import htsjdk.samtools.util.Histogram;
 import htsjdk.samtools.util.ProgressLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
+import org.vetmeduni.io.HistogramOutputs;
 import org.vetmeduni.tools.AbstractTool;
 import org.vetmeduni.tools.defaults.CommonOptions;
 import org.vetmeduni.utils.SAMRecordUtils;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.vetmeduni.utils.Formats.commaFmt;
 
 /**
  * Computes the softclip distribution (number of reads for each count)
@@ -55,7 +58,7 @@ public class SoftclipDistribution extends AbstractTool {
 			SamReader reader = SamReaderFactory.makeDefault().validationStringency(ValidationStringency.SILENT)
 											   .open(input);
 			Histogram<Integer> histogram = softClipDistribution(reader);
-			// TODO: print to the output
+			HistogramOutputs.printHistogram(histogram, output);
 			reader.close();
 		} catch (IOException | SAMException e) {
 			// This exception comes from the files
@@ -76,7 +79,7 @@ public class SoftclipDistribution extends AbstractTool {
 		int ignored = 0;
 		for (SAMRecord record : reader) {
 			// skip unmapped reads
-			if(record.getReadUnmappedFlag()) {
+			if (record.getReadUnmappedFlag()) {
 				ignored++;
 				progress.record(record);
 				continue;
@@ -84,8 +87,8 @@ public class SoftclipDistribution extends AbstractTool {
 			histogram.increment(SAMRecordUtils.softClippedBases(record));
 			progress.record(record);
 		}
-		logger.info("Processed ", progress.getCount(), " reads");
-		logger.warn("Ignored ", ignored, " unmapped reads");
+		logger.info("Processed ", commaFmt.format(progress.getCount()), " reads");
+		logger.warn("Ignored ", commaFmt.format(ignored), " unmapped reads");
 		return histogram;
 	}
 
