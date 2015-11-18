@@ -73,15 +73,19 @@ public class SoftclipDistribution extends AbstractTool {
 	private Histogram<Integer> softClipDistribution(SamReader reader) {
 		final Histogram<Integer> histogram = new Histogram<>("SoftClips", "ReadCounts");
 		ProgressLogger progress = new ProgressLogger(logger);
+		int ignored = 0;
 		for (SAMRecord record : reader) {
 			// skip unmapped reads
 			if(record.getReadUnmappedFlag()) {
+				ignored++;
+				progress.record(record);
 				continue;
 			}
 			histogram.increment(SAMRecordUtils.softClippedBases(record));
 			progress.record(record);
 		}
 		logger.info("Processed ", progress.getCount(), " reads");
+		logger.warn("Ignored ", ignored, " unmapped reads");
 		return histogram;
 	}
 

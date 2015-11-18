@@ -73,16 +73,20 @@ public class MismatchesByLength extends AbstractTool {
 	public RunningHistogram<Integer> mismatchesByLenght(SamReader reader) {
 		final RunningHistogram<Integer> histogram = new RunningHistogram<>("ReadLength", "NM");
 		ProgressLogger progress = new ProgressLogger(logger);
+		int ignored = 0;
 		for (SAMRecord record : reader) {
 			final int readLength = record.getReadLength();
 			Integer nm = record.getIntegerAttribute("NM");
 			if(nm == null) {
+				ignored++;
+				progress.record(record);
 				continue;
 			}
 			histogram.addValue(readLength, nm);
 			progress.record(record);
 		}
 		logger.info("Processed ", progress.getCount(), " reads");
+		logger.warn("Ignored ", ignored, " reads without NM tag");
 		return histogram;
 	}
 
