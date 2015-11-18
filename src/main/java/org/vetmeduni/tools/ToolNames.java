@@ -23,6 +23,9 @@
  */
 package org.vetmeduni.tools;
 
+import org.vetmeduni.tools.implemented.MismatchesByLength;
+import org.vetmeduni.tools.implemented.SoftclipDistribution;
+
 /**
  * Enum with all the tools already developed
  *
@@ -31,7 +34,9 @@ package org.vetmeduni.tools;
 public enum ToolNames {
 	MismatchesByLength("Compute the number of mismatches by length of the read",
 		"Obtain the mean and variance of the NM tag (number of mismatches) for reads regarding the read lenght. If the tag is not found, the record is ignored",
-		new org.vetmeduni.tools.implemented.MismatchesByLength());
+		new MismatchesByLength()),
+	SoftclipDistribution("Count how many reads have x softclip bases",
+		"Compute the distribution of softclip bases within a read. Unmapped reads are ignored", new SoftclipDistribution());
 
 	/**
 	 * The short description for the tool
